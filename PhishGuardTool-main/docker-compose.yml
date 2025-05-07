@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"  # Expose the frontend port to localhost:3000
+    volumes:
+      - ./frontend:/app  # Map your local frontend folder to the container's app folder
+    command: ["npm", "start"]  # Start the frontend using npm
+    depends_on:
+      - backend  # Make sure frontend waits for backend to start
+  
+  backend:
+    build:
+      context: ./backend  # Path to your backend Dockerfile
+    ports:
+      - "5000:5000"  # Expose the backend port to localhost:5000
+    volumes:
+      - ./backend:/app  # Map your local backend folder to the container's app folder
+    command: ["node", "server.js"]  # Run the main backend file
+    environment:
+      - NODE_ENV=production  # Optional: Define environment variables
